@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+
+# Dataset
+data/cifar-10-batches-py/
+
+# WandB
+wandb/
+
+# Model checkpoints
+*.pt
+*.pth
+
+# OS files
+.DS_Store

@@ -1,0 +1,12 @@
+transformers
+datasets
+evaluate
+scikit-learn
+matplotlib
+seaborn
+pandas
+numpy
+huggingface_hub
+gdown
+accelerate>=1.1.0
+

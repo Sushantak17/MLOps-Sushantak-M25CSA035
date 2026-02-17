@@ -1,0 +1,6 @@
+distilbert-reviews-genres/
+results/
+__pycache__/
+*.pyc
+*.safetensors
+*.bin

@@ -1,5 +1,9 @@
 torch
 torchvision
+datasets
+transformers
+wandb
+huggingface_hub
 scikit-learn
-numpy
-pillow
+matplotlib
+seaborn

@@ -1,30 +1,10 @@
-# ResNet Docker Training (MLOps Assignment)
+# ResNet18 HuggingFace Training Pipeline
 
-## Project Overview
-Training ResNet18 using Docker container with GPU acceleration.
+## Features
+- HuggingFace Dataset loading
+- ResNet18 Transfer Learning
+- WandB experiment tracking
+- Model pushed to HuggingFace Hub
 
----
-
-## Folder Structure
-
-resnet_docker/
-│
-├── train.py
-├── Dockerfile
-├── README.md
-└── data/train/
-
----
-
-## Build Docker Image
-
-```bash
-docker build -t resnet-training:v1 .
-
-## Running container
-
-docker run -it --rm \
---gpus all \
---shm-size=8g \
--v $(pwd):/workspace \
-resnet-training:v1
+## Run
+Open training_colab.ipynb in Google Colab.

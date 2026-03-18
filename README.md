@@ -19,7 +19,7 @@ This project focuses on optimizing a Transformer-based English-to-Hindi translat
 
 ---
 
-## ⚙Key Improvements
+## Key Improvements
 - Higher learning rate enabled faster convergence  
 - Reduced model size (d_model = 256, 3 layers) maintained performance  
 - OptunaSearch + ASHA enabled efficient hyperparameter tuning  

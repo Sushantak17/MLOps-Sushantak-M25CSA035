@@ -1,0 +1,19 @@
+{
+  "run_name": "LoRA_r4_a4.0_do0.1",
+  "use_lora": true,
+  "rank": 4,
+  "alpha": 4.0,
+  "dropout": 0.1,
+  "trainable_params": 149092,
+  "best_val_acc": 87.84,
+  "test_acc": 87.84,
+  "epoch_results": [
+    {
+      "epoch": 1,
+      "train_loss": 0.6331,
+      "val_loss": 0.4058,
+      "train_acc": 82.48,
+      "val_acc": 87.84
+    }
+  ]
+}

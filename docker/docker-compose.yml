@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  assignment5:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: dlops-ass5
+    container_name: dlops_ass5
+    environment:
+      - WANDB_API_KEY=${WANDB_API_KEY}
+    volumes:
+      - ..:/workspace
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+    command: bash

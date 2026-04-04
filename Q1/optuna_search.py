@@ -1,11 +1,6 @@
-"""
-Q1 Step 5: Optuna Hyperparameter Search for LoRA on CIFAR-100 ViT-S
-Fixed for CPU-only Docker on Apple Silicon:
-  - num_workers=0, pin_memory=False
-  - No autocast / GradScaler
-  - pixel_values= keyword for PEFT model
-  - 1 epoch per trial, 10% data subset for speed
-"""
+
+# Q1: Optuna Hyperparameter Search for LoRA on CIFAR-100 ViT-S
+
 
 import os
 import argparse

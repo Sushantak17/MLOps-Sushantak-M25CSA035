@@ -1,10 +1,4 @@
-"""
-Q2(ii): Adversarial Detection Model using ResNet-34
-Fixed for CPU-only Docker on Apple Silicon:
-  - No GradScaler, no autocast
-  - Stronger attacks (eps=0.1 default)
-  - No assert crash
-"""
+# Q2(ii): Adversarial Detection Model using ResNet-34
 
 import os
 import argparse

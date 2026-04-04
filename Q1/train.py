@@ -1,16 +1,4 @@
-"""
-Q1: ViT-S Fine-tuning with LoRA on CIFAR-100
-Supports:
-  - Baseline (head-only fine-tuning)
-  - LoRA with various rank/alpha combinations via PEFT
-  - WandB logging
-  - Gradient update graphs for LoRA weights
-
-Fixed for CPU-only Docker on Apple Silicon:
-  - num_workers=0 (fixes shared memory error)
-  - No autocast / GradScaler (no CUDA)
-  - pin_memory=False
-"""
+# Q1: ViT-S Fine-tuning with LoRA on CIFAR-100
 
 import os
 import argparse
@@ -28,9 +16,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Config & Argument Parsing
-# ──────────────────────────────────────────────────────────────────────────────
 
 def parse_args():
     parser = argparse.ArgumentParser(description="ViT-S LoRA on CIFAR-100")
@@ -59,9 +45,7 @@ def set_seed(seed):
     torch.backends.cudnn.deterministic = True
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Data
-# ──────────────────────────────────────────────────────────────────────────────
 
 def get_dataloaders(batch_size, num_workers=0):
     mean = (0.5071, 0.4867, 0.4408)
@@ -91,9 +75,7 @@ def get_dataloaders(batch_size, num_workers=0):
     return train_loader, val_loader
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Model
-# ──────────────────────────────────────────────────────────────────────────────
 
 def build_model(args, device):
     model_name = "WinKawaks/vit-small-patch16-224"
@@ -141,9 +123,7 @@ def count_trainable_params(model):
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Training / Validation
-# ──────────────────────────────────────────────────────────────────────────────
 
 def model_forward(model, images):
     """Handle both normal ViT and PEFT-wrapped ViT forward pass."""
@@ -190,9 +170,7 @@ def evaluate(model, loader, criterion, device):
     return total_loss / total, 100.0 * correct / total, all_preds, all_labels
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # LoRA Gradient Tracking
-# ──────────────────────────────────────────────────────────────────────────────
 
 class GradientTracker:
     def __init__(self, model):
@@ -221,9 +199,7 @@ class GradientTracker:
         return stats
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Plotting helpers
-# ──────────────────────────────────────────────────────────────────────────────
 
 def plot_classwise_accuracy(preds, labels, num_classes, save_path):
     per_class_correct = np.zeros(num_classes)
@@ -259,9 +235,7 @@ def plot_lora_gradients(grad_history, save_path):
     plt.close()
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Main
-# ──────────────────────────────────────────────────────────────────────────────
 
 def main():
     args = parse_args()

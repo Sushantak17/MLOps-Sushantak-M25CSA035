@@ -1,9 +1,6 @@
-"""
-Q2(i): ResNet-18 on CIFAR-10, trained from scratch, then attacked with:
-  - FGSM (custom implementation)
-  - FGSM via IBM ART
-Includes visual comparison and WandB logging.
-"""
+
+# Q2(i): ResNet-18 on CIFAR-10, trained from scratch, then attacked with:
+
 
 import os
 import argparse
@@ -22,9 +19,7 @@ from art.estimators.classification import PyTorchClassifier
 from art.attacks.evasion import FastGradientMethod
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Config
-# ──────────────────────────────────────────────────────────────────────────────
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Q2(i) FGSM on CIFAR-10")
@@ -43,9 +38,7 @@ def set_seed(seed):
     torch.backends.cudnn.deterministic = True
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Data
-# ──────────────────────────────────────────────────────────────────────────────
 
 CIFAR10_MEAN = (0.4914, 0.4822, 0.4465)
 CIFAR10_STD  = (0.2023, 0.1994, 0.2010)
@@ -77,20 +70,14 @@ def get_raw_test_data(n=1000):
     return images.numpy(), labels.numpy()
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Model
-# ──────────────────────────────────────────────────────────────────────────────
-
 def build_resnet18():
     model = models.resnet18(weights=None)
     model.fc = nn.Linear(model.fc.in_features, 10)
     return model
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Training
-# ──────────────────────────────────────────────────────────────────────────────
-
 def train(model, train_loader, test_loader, args, device):
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=args.lr,
@@ -149,10 +136,7 @@ def evaluate_loader(model, loader, criterion, device):
     return total_loss / total, 100.0 * correct / total
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # FGSM from Scratch
-# ──────────────────────────────────────────────────────────────────────────────
-
 def normalize_tensor(x, mean, std, device):
     m = torch.tensor(mean, device=device).view(1, 3, 1, 1)
     s = torch.tensor(std,  device=device).view(1, 3, 1, 1)
@@ -191,10 +175,7 @@ def eval_on_raw(model, images_raw, labels, device):
     return acc
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Visualization helpers
-# ──────────────────────────────────────────────────────────────────────────────
-
 CIFAR10_CLASSES = [
     "airplane","automobile","bird","cat","deer",
     "dog","frog","horse","ship","truck"
@@ -250,10 +231,7 @@ def plot_eps_vs_accuracy(epsilons, acc_scratch, acc_art, path):
     plt.close()
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Main
-# ──────────────────────────────────────────────────────────────────────────────
-
 def main():
     args = parse_args()
     set_seed(args.seed)
@@ -266,7 +244,7 @@ def main():
     train_loader, test_loader = get_dataloaders(args.batch_size)
     model = build_resnet18().to(device)
 
-    # ── 1. Train from scratch ──────────────────────────────────────────────
+    # ── 1. Train from scratch
     print("Training ResNet-18 from scratch on CIFAR-10...")
     model = train(model, train_loader, test_loader, args, device)
 
@@ -276,7 +254,7 @@ def main():
     print(f"Clean test accuracy: {clean_acc:.2f}%")
     assert clean_acc >= 72.0, f"Clean acc {clean_acc:.2f}% < 72%. Consider training longer."
 
-    # ── 2 & 3. FGSM attacks ───────────────────────────────────────────────
+    # ── 2 & 3. FGSM attacks 
     images_raw, labels_np = get_raw_test_data(n=1000)
     images_t  = torch.tensor(images_raw)
     labels_t  = torch.tensor(labels_np)
@@ -320,7 +298,7 @@ def main():
     plot_eps_vs_accuracy(epsilons, acc_scratch_list, acc_art_list, plot_path)
     wandb.log({"perturbation_vs_accuracy": wandb.Image(plot_path)})
 
-    # ── 4. Visual comparison (eps=0.03) ───────────────────────────────────
+    # ── 4. Visual comparison (eps=0.03) 
     eps_vis = 0.03
     adv_s_vis = fgsm_scratch(model, images_t[:10], labels_t[:10], eps_vis, device)
 
@@ -346,7 +324,7 @@ def main():
     )
     wandb.log({"fgsm_visual_comparison": wandb.Image(comp_path)})
 
-    # ── WandB: log 10 samples each for clean + adv ────────────────────────
+    # ── WandB: log 10 samples each for clean + adv 
     for i in range(10):
         wandb.log({
             "samples/clean": wandb.Image(
@@ -363,7 +341,7 @@ def main():
             ),
         })
 
-    # ── 5 & 6. Summary ────────────────────────────────────────────────────
+    # ── 5 & 6. Summary
     print("\n===== FGSM Summary =====")
     print(f"Clean acc:           {acc_clean_on_raw:.2f}%")
     for eps, acc_s, acc_a in zip(epsilons, acc_scratch_list, acc_art_list):

@@ -1,12 +1,3 @@
-"""
-Push best LoRA ViT-S model to HuggingFace Hub.
-Usage:
-    python push_to_hub.py \
-        --ckpt checkpoints/LoRA_r4_a8_do0.1_best.pt \
-        --repo_id YOUR_USERNAME/vit-small-lora-cifar100 \
-        --rank 4 --alpha 8 --dropout 0.1
-"""
-
 import argparse
 import json
 import torch

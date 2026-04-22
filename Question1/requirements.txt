@@ -1,0 +1,6 @@
+transformers==3.5.1
+torch==1.10.2
+sentencepiece
+sacremoses
+sacrebleu==1.5.1
+numpy
